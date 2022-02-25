@@ -1,0 +1,30 @@
+@inject HttpClient Http
+@page "/daily/{daynumber}"
+@using Models.Aladhan
+@using Newtonsoft.Json
+
+@if(Data != null)
+{
+    <ul>
+        <li>@Data.Timings.Fajr</li>
+        <li>@Data.Timings.Dhuhr</li>
+        <li>@Data.Timings.Asr</li>
+        <li>@Data.Timings.Maghrib</li>
+        <li>@Data.Timings.Isha</li>
+    </ul>
+}
+
+@code {
+    [Parameter]
+    public string dayNumber { get; set; }
+    public Datum Data { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var Times = await Http.GetFromJsonAsync<AladhanTimes>("http://api.aladhan.com/v1/calendar?latitude=41.20&longitude=69.17&method=14&month=4&year=2022");
+        Data = Times.Data.FirstOrDefault(i => int.Parse(i.Date.Gregorian.Day) == int.Parse(dayNumber));
+        // Console.WriteLine($"{JsonConvert.SerializeObject(Times)}");
+        
+        StateHasChanged();
+    }
+}

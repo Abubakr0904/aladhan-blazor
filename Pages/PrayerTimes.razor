@@ -1,0 +1,29 @@
+@using Models.Aladhan
+@using Newtonsoft.Json
+
+@inject HttpClient Http
+@page "/prayertimes"
+
+
+<h1>Hello times</h1>
+
+@if (Times != null)
+{
+    @foreach (var day in Times.Data)
+    {
+        <a href="/daily/@(Times.Data.IndexOf(day)+1)"><h3>@(Times.Data.IndexOf(day)+1) - kun</h3></a>
+    }
+}
+
+@* <parameters.Components.TimingsComponent Model="@Times"/> *@
+
+@code {
+    public AladhanTimes Times { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Times = await Http.GetFromJsonAsync<AladhanTimes>("http://api.aladhan.com/v1/calendar?latitude=41.20&longitude=69.17&method=14&month=4&year=2022");
+        
+        // Console.WriteLine($"{JsonConvert.SerializeObject(Times)}");
+    }
+}

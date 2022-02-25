@@ -1,0 +1,47 @@
+@using Models.Aladhan
+
+@if(Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Fajr
+                </th>
+                <th>
+                    Dhuhr
+                </th>
+                <th>
+                    Asr
+                </th>
+                <th>
+                    Maghrib
+                </th>
+                <th>
+                    Isha
+                </th>
+            </tr>
+        </thead>
+    </table>
+    @foreach (var time in Model.Data)
+    {
+        <table class="table">
+            <tbody>
+                <td>@time.Timings.Fajr</td>
+                <td>@time.Timings.Dhuhr</td>
+                <td>@time.Timings.Asr</td>
+                <td>@time.Timings.Maghrib</td>
+                <td>@time.Timings.Isha</td>
+            </tbody>
+        </table>
+    }
+}
+else
+{
+    <h1>Loading...</h1>
+}
+
+@code {
+    [Parameter]
+    public AladhanTimes Model { get; set; }
+}
